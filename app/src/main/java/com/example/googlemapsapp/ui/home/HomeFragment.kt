@@ -34,8 +34,8 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
     }
 
     private fun setUpMap() {
-        val mapFragment = activity?.supportFragmentManager?.findFragmentById(R.id.google_map) as? SupportMapFragment
-        mapFragment?.getMapAsync(this)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     private fun setUpObserver() {
