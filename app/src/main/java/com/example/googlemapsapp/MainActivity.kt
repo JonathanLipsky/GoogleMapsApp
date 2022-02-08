@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        TODO("Not yet implemented")
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {

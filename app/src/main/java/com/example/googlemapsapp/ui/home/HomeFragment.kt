@@ -1,5 +1,7 @@
 package com.example.googlemapsapp.ui.home
 
+import android.annotation.SuppressLint
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.googlemapsapp.R
 import com.example.googlemapsapp.databinding.FragmentHomeBinding
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -29,6 +32,7 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpLocation()
         setUpObserver()
         setUpMap()
     }
@@ -36,6 +40,16 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
     private fun setUpMap() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun setUpLocation() {
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                var latitude = location?.latitude
+                var longitude = location?.longitude
+            }
     }
 
     private fun setUpObserver() {
