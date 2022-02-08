@@ -10,15 +10,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.googlemapsapp.R
 import com.example.googlemapsapp.databinding.FragmentHomeBinding
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+
+
+
 
 class HomeFragment : Fragment() , OnMapReadyCallback {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var mMap: GoogleMap
+    private var fusedLocationClient: FusedLocationProviderClient? = null
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
@@ -27,6 +34,7 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        fusedLocationClient =  LocationServices.getFusedLocationProviderClient(requireActivity())
         return binding.root
     }
 
@@ -44,19 +52,25 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     private fun setUpLocation() {
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
+        fusedLocationClient?.lastLocation
+            ?.addOnSuccessListener { location: Location? ->
                 var latitude = location?.latitude
                 var longitude = location?.longitude
             }
     }
 
     private fun setUpObserver() {
-
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setOnMapLongClickListener { location ->
+            googleMap.clear()
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(location)
+                    .title("")
+            )
+        }
     }
 }
