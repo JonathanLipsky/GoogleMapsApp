@@ -1,5 +1,6 @@
 package com.example.googlemapsapp.api
 
+import com.example.googlemapsapp.api.data.WeatherResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -9,7 +10,7 @@ interface WeatherApiService {
     @GET("weather")
     suspend fun getWeather(@Query("lat") latitude: String,
                            @Query("lon") longitude: String,
-                           @Query("appid") apiKey: String = API_KEY): Response<Unit>
+                           @Query("appid") apiKey: String = API_KEY): Response<WeatherResponse>
 
 }
 

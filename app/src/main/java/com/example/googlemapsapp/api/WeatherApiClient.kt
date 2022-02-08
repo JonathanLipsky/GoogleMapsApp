@@ -1,5 +1,6 @@
 package com.example.googlemapsapp.api
 
+import com.example.googlemapsapp.api.data.WeatherResponse
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -31,7 +32,7 @@ object WeatherApiClient {
 
     }
 
-    suspend fun getWeather(lat: String, lon: String) : Response<Unit> {
+    suspend fun getWeather(lat: String, lon: String) : Response<WeatherResponse> {
         val accountApiService = apiClient().create(WeatherApiService::class.java)
         return accountApiService.getWeather(lat, lon)
     }

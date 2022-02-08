@@ -20,9 +20,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-
-
-
 class HomeFragment : Fragment() , OnMapReadyCallback {
 
     private lateinit var binding: FragmentHomeBinding
@@ -81,7 +78,7 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
                 when (it.status) {
                     Status.SUCCESS -> {
                         it.data?.let {
-                            Toast.makeText(activity?.applicationContext, "Success", Toast.LENGTH_LONG).show()
+                            Toast.makeText(activity?.applicationContext, "Success: ${it.body()}", Toast.LENGTH_LONG).show()
                         }
                     }
                     Status.ERROR -> {
