@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.googlemapsapp.R
+import com.example.googlemapsapp.api.util.Status
 import com.example.googlemapsapp.databinding.FragmentHomeBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -41,7 +43,6 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpLocation()
-        setUpObserver()
         setUpMap()
     }
 
@@ -59,18 +60,36 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
             }
     }
 
-    private fun setUpObserver() {
-    }
-
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.setOnMapLongClickListener { location ->
+            onMapClick(location)
             googleMap.clear()
             googleMap.addMarker(
                 MarkerOptions()
                     .position(location)
                     .title("")
             )
+        }
+    }
+
+    private fun onMapClick(latLng: LatLng) {
+        val lat = latLng.latitude.toString()
+        val lon = latLng.longitude.toString()
+        viewModel.getWeather(lat, lon).observe(viewLifecycleOwner){ dataState ->
+            dataState?.let {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        it.data?.let {
+                            Toast.makeText(activity?.applicationContext, "Success", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                    Status.ERROR -> {
+                        Toast.makeText(activity?.applicationContext, it.message, Toast.LENGTH_LONG).show()
+                    }
+                    Status.LOADING -> {}
+                }
+            }
         }
     }
 }
