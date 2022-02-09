@@ -12,13 +12,17 @@ import androidx.fragment.app.viewModels
 import com.example.googlemapsapp.R
 import com.example.googlemapsapp.api.util.Status
 import com.example.googlemapsapp.databinding.FragmentHomeBinding
+import com.example.googlemapsapp.utils.centerMarker
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+
 
 class HomeFragment : Fragment() , OnMapReadyCallback {
 
@@ -59,6 +63,7 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.setMaxZoomPreference(10.0f);
         mMap.setOnMapLongClickListener { location ->
             onMapClick(location)
             googleMap.clear()
@@ -67,8 +72,10 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
                     .position(location)
                     .title("")
             )
+            mMap.centerMarker(location)
         }
     }
+
 
     private fun onMapClick(latLng: LatLng) {
         val lat = latLng.latitude.toString()
@@ -84,7 +91,7 @@ class HomeFragment : Fragment() , OnMapReadyCallback {
                     Status.ERROR -> {
                         Toast.makeText(activity?.applicationContext, it.message, Toast.LENGTH_LONG).show()
                     }
-                    Status.LOADING -> {}
+                    Status.LOADING -> { }
                 }
             }
         }
