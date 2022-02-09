@@ -35,6 +35,6 @@ object GooglePlacesApiClient {
 
     suspend fun getNearbyRestaurants(lat: String, lon: String) : Response<GooglePlacesResponse> {
         val googlePlacesApiService = apiClient().create(GooglePlacesApiService::class.java)
-        return googlePlacesApiService.getNearbyRestaurants("", "", "", "")
+        return googlePlacesApiService.getNearbyRestaurants("${lat},${lon}", "1500")
     }
 }

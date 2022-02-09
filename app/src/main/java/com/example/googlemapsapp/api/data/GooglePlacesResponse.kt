@@ -10,7 +10,16 @@ data class GooglePlacesResponse(
         val name: String,
         val rating: Float,
         @SerializedName("place_id")
-        val placeId: String
+        val placeId: String,
+        val geometry: Geometry
+    )
+
+    data class Geometry(
+        val location: Location)
+
+    data class Location(
+        val lat: Double,
+        val lng: Double
     )
 
 }
