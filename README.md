@@ -1,2 +1,2 @@
 ## GoogleMapsApp
-Application example
+Application example for android
